@@ -1,0 +1,220 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.18.4"
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "a9f84db3539e4cdd75cfdac4e10274a6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><a href=\"https://colab.research.google.com/github/EllieKallmier/sola5050-t1-2025/blob/main/Bill_calculator.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "c636e9c544545ae596f35bd58b950b98",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"bill-calculator\">Bill Calculator</h1>\n<span class=\"paragraph\">Includes:</span>\n<ul>\n<li>Bill calculation for load profiles with and without PV</li>\n<li>Calculates bills with flat rate, time of use and/or demand charges and includes feed in credits and daily usage charges.</li>\n<li>Option to add a battery with a simple algorithm set to maximise self-consumption.</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "4db7a50271963c6923b3da2dea7fbbc2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"data\">Data</h1>\n<span class=\"paragraph\">To calculate bill outcomes under different tariffs and solar/battery scenarios, we need to start with some load and PV data.</span>\n<span class=\"paragraph\">We also need information about the tariffs themselves. To work with the functions in the rest of the notebook, this tariff information needs to be passed to the functions in a specific format.</span>\n<span class=\"paragraph\">Luckily we have around 100 sample residential and small business tariffs already in the correct structure that you can start with.</span>\n<span class=\"paragraph\"><br></br>\n<em>Extra options for super keen students:</em></span>\n<ul>\n<li><em>We have some large commercial tariffs also structured to work with these functions - they are more complex.</em></li>\n<li><em>I've got a script that accesses the AER's public API containing current retail tariff offerings from a range of retailers in NEM states and restructures them into this format. It is also more complex, but may be of interest if you are specifically looking into retail tariffs.</em></li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "0493225fdff9d8986ced3f128910760a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"load-in-data-and-pre-process\">Load in data and pre-process</h3>\n<span class=\"paragraph\">It's always important when working with data to take time to assess the quality and existing structure of the data.</span>\n<span class=\"paragraph\">Pandas is a widely used Python package for data handling and can make this checking and pre-processing step quick and easy.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "31cda9713e565d4fa1b21059748c081a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"bring-in-tariffs\">Bring in tariffs</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "957034a28cf8dee0169785e9062e4789",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"calculation-functions\">Calculation Functions</h1>\n<span class=\"paragraph\">This section holds all the functions that are used to calculate the energy usage or demand charges and total bill outcomes for a given load profile and chosen tariff.</span>\n<span class=\"paragraph\">You will need to run the cell below to make sure the functions are defined and usable in the next steps, but you don't need to read through or understand these functions.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "2bfaaa9b9766a47a1f84fa8c6374c731",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"run-tariff-calculations-on-sample-load-profile\">Run tariff calculations on sample load profile</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "e6266e1c71c781e88d2f80969cb23165",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Other notes to touch on:</span>\n<ul>\n<li>\n<span class=\"paragraph\">More tools: PPA Tool (need emissions data - I can share some)</span>\n<ul>\n<li>But includes more complex battery optimisation if interested</li>\n</ul>\n</li>\n<li>ISP inputs - we have packages to make them easier to read/process (advanced)</li>\n<li>Notebook with dispatch simulation for timeseries: also advanced but we can share/help.</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "af1fe669ace9236b444c030084bb5e1f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "0f5296e0751a9dde0d22eb46d43ac5ae",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "56cb4d39133303af4c45ca62fdccd35e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "f669cf53ba6395b4f50c6e1a3ec94721",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "69c247e3a1fa6d3271119bf72f15c7be",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "b188221f97e0eea3f9e2864dc2a9891d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "bbf5c411c37bff2dac96cb73346eec15",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "b09c577f8e38db65bb6f99698de76827",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "2f5271ae9224b322f25108ec48014f3f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "5edbe5c940605d4f0ea47ab6db21416b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "25e9142f0ebd9d5c2bdb9874649ebb22",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "a65e6184d997262c87803be3e702f670",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "31dbec3c6a5d3b5d27501baa1349e1b3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "7495742e03c00bb3460ac9de3d6d4f5d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "d6a6ce32fcca986ae8d96fff33da5940",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "94910ce30f22d3de6fda3d11faaf8227",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "66cb6549af7eb792b352a8c44fed484e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [],
+      "console": []
+    }
+  ]
+}

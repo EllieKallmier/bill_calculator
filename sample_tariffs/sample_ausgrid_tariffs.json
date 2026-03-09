@@ -1,0 +1,1362 @@
+[
+    {
+        "CustomerType": "RESIDENTIAL",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/day",
+                "Value": 0.730047
+            },
+            "TOU": {
+                "Peak Summer/Winter": {
+                    "Month": [
+                        11,
+                        12,
+                        1,
+                        2,
+                        3,
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "15:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.321695,
+                    "Weekday": true,
+                    "Weekend": true
+                },
+                "Off-Peak Summer/Winter": {
+                    "Month": [
+                        7,
+                        8,
+                        11,
+                        12,
+                        1,
+                        2,
+                        3,
+                        6
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "21:00",
+                            "15:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.056688,
+                    "Weekday": true,
+                    "Weekend": true
+                },
+                "Off-Peak Weekends": {
+                    "Month": [
+                        9,
+                        10,
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "00:00",
+                            "00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.056688,
+                    "Weekday": true,
+                    "Weekend": true
+                }
+            },
+            "FiT_TOU": {
+                "Export Rebate": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "16:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": -0.042406,
+                    "Weekday": true,
+                    "Weekend": true
+                },
+                "Export Charge": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "10:00",
+                            "15:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.013552,
+                    "Weekday": true,
+                    "Weekend": true
+                }
+            }
+        },
+        "Type": "TOU",
+        "Distributor": "Ausgrid",
+        "Name": "Network TOU",
+        "Tariff ID": "EA025",
+        "ProviderType": "Retailer",
+        "Provider": "Ausgrid",
+        "Date_accessed": "2025-12"
+    },
+    {
+        "CustomerType": "RESIDENTIAL",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/day",
+                "Value": 0.613604
+            },
+            "FlatRate": {
+                "Unit": "$/kWh",
+                "Value": 0.128700
+            },
+            "FiT_TOU": {
+                "Export Rebate": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "16:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": -0.042406,
+                    "Weekday": true,
+                    "Weekend": true
+                },
+                "Export Charge": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "10:00",
+                            "15:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.013552,
+                    "Weekday": true,
+                    "Weekend": true
+                }
+            }
+        },
+        "Type": "Single_Rate",
+        "Distributor": "Ausgrid",
+        "Name": "Network Flat",
+        "Tariff ID": "EA010",
+        "ProviderType": "Retailer",
+        "Provider": "Ausgrid",
+        "Date_accessed": "2025-12"
+    },
+    {
+        "CustomerType": "RESIDENTIAL",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/day",
+                "Value": 0.731693
+            },
+            "FlatRate": {
+                "Unit": "$/kWh",
+                "Value": 0.026708
+            },
+            "Demand": {
+                "Peak": {
+                    "Min Demand (kW)": 0.0,
+                    "Max Demand (kW)": 0.0,
+                    "Month": [
+                        11,
+                        12,
+                        1,
+                        2,
+                        3,
+                        6,
+                        7,
+                        8
+                    ],
+                    "Number of Peaks": 1,
+                    "TimeIntervals": {
+                        "T0": [
+                            "15:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kW/day",
+                    "Value": 0.423425,
+                    "Weekday": true,
+                    "Weekend": true
+                }
+            },
+            "FiT_TOU": {
+                "Export Rebate": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "16:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": -0.042406,
+                    "Weekday": true,
+                    "Weekend": true
+                },
+                "Export Charge": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T0": [
+                            "10:00",
+                            "15:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.013552,
+                    "Weekday": true,
+                    "Weekend": true
+                }
+            }
+        },
+        "Type": "Demand",
+        "Distributor": "Ausgrid",
+        "Name": "Network Demand",
+        "Tariff ID": "EA116",
+        "ProviderType": "Retailer",
+        "Provider": "Ausgrid",
+        "Date_accessed": "2025-12"
+    },
+    {
+        "CustomerType": "Residential",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/Day",
+                "Value": 0.9304
+            },
+            "TOU": {
+                "Peak All Year Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.4579,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Peak All Year Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.4579,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak All Year Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "14:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "10:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3026,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak All Year Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "14:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "10:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3026,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder All Year Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "10:00:00",
+                            "14:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2154,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder All Year Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "10:00:00",
+                            "14:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2154,
+                    "Weekday": false,
+                    "Weekend": true
+                }
+            },
+            "FiT": {
+                "Unit": "$/kWh",
+                "Value": 0.044
+            }
+        },
+        "Type": "TOU",
+        "Distributor": "Ausgrid",
+        "Name": "Time of Use (Ausgrid) NSW Residential",
+        "Tariff ID": "RT004",
+        "ProviderType": "Retailer",
+        "Provider": "AGL",
+        "Date_accessed": "2026-02",
+        "State": "NSW",
+        "Year": "2025"
+    },
+    {
+        "CustomerType": "Residential",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/Day",
+                "Value": 0.984
+            },
+            "FiT": {
+                "Unit": "$/kWh",
+                "Value": 0.044
+            },
+            "FlatRate": {
+                "Unit": "$/kWh",
+                "Value": 0.3589
+            }
+        },
+        "Type": "Single_Rate",
+        "Distributor": "Ausgrid",
+        "Name": "Single Rate (Ausgrid) NSW Residential",
+        "Tariff ID": "RS005",
+        "ProviderType": "Retailer",
+        "Provider": "AGL/EnergyAustralia",
+        "Date_accessed": "2026-02",
+        "State": "NSW",
+        "Year": "2025"
+    },
+    {
+        "CustomerType": "Residential",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/Day",
+                "Value": 1.232
+            },
+            "TOU": {
+                "Peak Weekdays Nov Mar": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "14:00:00",
+                            "20:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.7065,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Nov Mar Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Nov Mar Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder Weekdays Nov Mar": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "14:00:00"
+                        ],
+                        "T2": [
+                            "20:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder Weekend Nov Mar": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Apr May Weekday": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Apr May Weekend": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder Apr May Weekday": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder Apr May Weekend": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Peak Weekdays Jun Aug": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "17:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.7065,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Jun Aug Weekday": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Jun Aug Weekend": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder Weekdays Jun Aug": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "17:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder Weekend Jun Aug": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Sep Oct Weekday": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Sep Oct Weekend": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.2961,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder Sep Oct Weekday": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder Sep Oct Weekend": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3733,
+                    "Weekday": false,
+                    "Weekend": true
+                }
+            },
+            "FiT": {
+                "Unit": "$/kWh",
+                "Value": 0.044
+            }
+        },
+        "Type": "SToU",
+        "Distributor": "Ausgrid",
+        "Name": "Seasonal Time of Use  (Ausgrid) NSW Residential",
+        "Tariff ID": "RST006",
+        "ProviderType": "Retailer",
+        "Provider": "EnergyAustralia",
+        "Date_accessed": "2026-02",
+        "State": "NSW",
+        "Year": "2025"
+    },
+    {
+        "CustomerType": "Residential",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/Day",
+                "Value": 1.06
+            },
+            "TOU": {
+                "Peak Nov Mar Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Peak Nov Mar Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Nov Mar Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Nov Mar Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Weekdays Apr May": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Peak Weekend Apr May": {
+                    "Month": [
+                        4,
+                        5
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Peak Jun Aug Weekday": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Peak Jun Aug Weekend": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00:00",
+                            "21:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Jun Aug Weekday": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak Jun Aug Weekend": {
+                    "Month": [
+                        6,
+                        7,
+                        8
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "15:00:00"
+                        ],
+                        "T2": [
+                            "21:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Off Peak Weekdays Sep Oct": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Peak Weekend Sep Oct": {
+                    "Month": [
+                        9,
+                        10
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "00:00:00",
+                            "00:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.3812,
+                    "Weekday": false,
+                    "Weekend": true
+                }
+            },
+            "Demand": {
+                "Summer: 1 Nov to 31 Mar Weekdays Nov Aug": {
+                    "Min Demand (kW)": 0.0,
+                    "Max Demand (kW)": 0.0,
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        6,
+                        7,
+                        8,
+                        11,
+                        12
+                    ],
+                    "Number of Peaks": 1,
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00",
+                            "21:00"
+                        ],
+                        "T2": [
+                            "15:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kW/Day",
+                    "Value": 0.007256,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Winter: 1 Jun to 31 Aug Weekdays Nov Aug": {
+                    "Min Demand (kW)": 0.0,
+                    "Max Demand (kW)": 0.0,
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        6,
+                        7,
+                        8,
+                        11,
+                        12
+                    ],
+                    "Number of Peaks": 1,
+                    "TimeIntervals": {
+                        "T1": [
+                            "15:00",
+                            "21:00"
+                        ],
+                        "T2": [
+                            "15:00",
+                            "21:00"
+                        ]
+                    },
+                    "Unit": "$/kW/Day",
+                    "Value": 0.007256,
+                    "Weekday": true,
+                    "Weekend": false
+                }
+            },
+            "FiT": {
+                "Unit": "$/kWh",
+                "Value": 0.0308
+            }
+        },
+        "Type": "STOU_Demand",
+        "Distributor": "Ausgrid",
+        "Name": "Seasonal Time of Use Demand (Ausgrid) NSW Residential",
+        "Tariff ID": "RSTD006",
+        "ProviderType": "Retailer",
+        "Provider": "OVO Energy",
+        "Date_accessed": "2026-02",
+        "State": "NSW",
+        "Year": "2025"
+    },
+    {
+        "CustomerType": "Residential",
+        "Parameters": {
+            "Daily": {
+                "Unit": "$/Day",
+                "Value": 0.9459
+            },
+            "TOU": {
+                "Peak Weekdays All Year": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "14:00:00",
+                            "20:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.28,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak All Year Weekday": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.28,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Off Peak All Year Weekend": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "22:00:00",
+                            "07:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.28,
+                    "Weekday": false,
+                    "Weekend": true
+                },
+                "Shoulder Weekdays All Year": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "14:00:00"
+                        ],
+                        "T2": [
+                            "20:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.28,
+                    "Weekday": true,
+                    "Weekend": false
+                },
+                "Shoulder Weekend All Year": {
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "TimeIntervals": {
+                        "T1": [
+                            "07:00:00",
+                            "22:00:00"
+                        ]
+                    },
+                    "Unit": "$/kWh",
+                    "Value": 0.28,
+                    "Weekday": false,
+                    "Weekend": true
+                }
+            },
+            "Demand": {
+                "Time of Use Tariff Period Weekdays All Year": {
+                    "Min Demand (kW)": 0.0,
+                    "Max Demand (kW)": 0.0,
+                    "Month": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12
+                    ],
+                    "Number of Peaks": 1,
+                    "TimeIntervals": {
+                        "T1": [
+                            "14:00",
+                            "20:00"
+                        ]
+                    },
+                    "Unit": "$/kW/Day",
+                    "Value": 0.1678,
+                    "Weekday": true,
+                    "Weekend": false
+                }
+            },
+            "FiT": {
+                "Unit": "$/kWh",
+                "Value": 0.044
+            }
+        },
+        "Type": "TOU_Demand",
+        "Distributor": "Ausgrid",
+        "Name": "Time of Use Demand (Ausgrid) NSW Residential",
+        "Tariff ID": "RTD008",
+        "ProviderType": "Retailer",
+        "Provider": "Red Energy",
+        "Date_accessed": "2026-02",
+        "State": "NSW",
+        "Year": "2025"
+    }
+]
