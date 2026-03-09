@@ -58,23 +58,24 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    # Sample data file selector
+    # Sample data file selector (using GitHub raw URLs for WASM compatibility)
+    _base_url = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_data/"
     _sample_files = {
-        "S0023": "sample_data/S0023_profile.csv",
-        "S0033": "sample_data/S0033_profile.csv",
-        "S0040": "sample_data/S0040_profile.csv",
-        "S0047": "sample_data/S0047_profile.csv",
-        "S0057": "sample_data/S0057_profile.csv",
-        "S0077": "sample_data/S0077_profile.csv",
-        "S0093": "sample_data/S0093_profile.csv",
-        "S0153": "sample_data/S0153_profile.csv",
-        "S0164": "sample_data/S0164_profile.csv",
-        "S0179": "sample_data/S0179_profile.csv",
-        "S0182": "sample_data/S0182_profile.csv",
-        "S0187": "sample_data/S0187_profile.csv",
-        "S0189": "sample_data/S0189_profile.csv",
-        "S0232": "sample_data/S0232_profile.csv",
-        "S0244": "sample_data/S0244_profile.csv",
+        "S0023": f"{_base_url}S0023_profile.csv",
+        "S0033": f"{_base_url}S0033_profile.csv",
+        "S0040": f"{_base_url}S0040_profile.csv",
+        "S0047": f"{_base_url}S0047_profile.csv",
+        "S0057": f"{_base_url}S0057_profile.csv",
+        "S0077": f"{_base_url}S0077_profile.csv",
+        "S0093": f"{_base_url}S0093_profile.csv",
+        "S0153": f"{_base_url}S0153_profile.csv",
+        "S0164": f"{_base_url}S0164_profile.csv",
+        "S0179": f"{_base_url}S0179_profile.csv",
+        "S0182": f"{_base_url}S0182_profile.csv",
+        "S0187": f"{_base_url}S0187_profile.csv",
+        "S0189": f"{_base_url}S0189_profile.csv",
+        "S0232": f"{_base_url}S0232_profile.csv",
+        "S0244": f"{_base_url}S0244_profile.csv",
     }
     sample_data_selector = mo.ui.dropdown(
         options=_sample_files,
@@ -87,8 +88,9 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(pd, sample_data_selector):
-    # Load selected sample data
-    _filepath = sample_data_selector.value or "sample_data/S0023_profile.csv"
+    # Load selected sample data from GitHub
+    _base_url = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_data/"
+    _filepath = sample_data_selector.value or f"{_base_url}S0023_profile.csv"
     sample_load_profile = pd.read_csv(
         _filepath,
         parse_dates=["TS"],
@@ -1429,10 +1431,9 @@ def _(pd):
 @app.cell(hide_code=True)
 def _():
     # ---------------------------------------------------------------------------
-    # Tariff data (embedded JSON for WASM compatibility)
+    # Tariff data URL (GitHub raw URL for WASM compatibility)
     # ---------------------------------------------------------------------------
-    # TODO: Replace with GitHub raw URL when published
-    SAMPLE_TARIFFS_URL = "sample_tariffs/sample_ausgrid_tariffs.json"
+    SAMPLE_TARIFFS_URL = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_tariffs/sample_ausgrid_tariffs.json"
 
     return (SAMPLE_TARIFFS_URL,)
 
@@ -1440,11 +1441,12 @@ def _():
 @app.cell(hide_code=True)
 def _(SAMPLE_TARIFFS_URL, pd):
     import json
+    import urllib.request
 
     def fetch_all_tariffs() -> tuple[list[dict], dict]:
-        """Load all available tariffs from the local JSON file or URL."""
-        with open(SAMPLE_TARIFFS_URL, "r") as f:
-            all_tariffs = json.load(f)
+        """Load all available tariffs from the GitHub URL."""
+        with urllib.request.urlopen(SAMPLE_TARIFFS_URL) as response:
+            all_tariffs = json.loads(response.read().decode("utf-8"))
 
         filter_options = {
             "types": sorted(
