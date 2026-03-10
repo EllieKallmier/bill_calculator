@@ -200,20 +200,21 @@ def _(mo, tariff_selector):
 
 
 @app.cell(hide_code=True)
-def _(custom_tariff, mo, tariff_selector):
-    # Show selected tariff count (including custom tariff if added)
+def _(custom_tariffs_list, mo, tariff_selector):
+    # Show selected tariff count (including custom tariffs if added)
     _selected = tariff_selector.value if hasattr(tariff_selector, "value") else []
     _api_count = len(_selected)
-    _custom_count = 1 if custom_tariff is not None else 0
+    _custom_count = len(custom_tariffs_list) if custom_tariffs_list else 0
     _total_count = _api_count + _custom_count
 
     _output = None
     if _total_count > 0:
-        _custom_note = (
-            f" (including custom tariff: *{custom_tariff['Name']}*)"
-            if custom_tariff
-            else ""
-        )
+        _custom_note = ""
+        if _custom_count > 0:
+            _custom_names = ", ".join([t["Name"] for t in custom_tariffs_list])
+            _custom_note = (
+                f" (including {_custom_count} custom tariff(s): *{_custom_names}*)"
+            )
         _output = mo.callout(
             mo.md(
                 f"**{_total_count} tariff(s) selected** for comparison{_custom_note}."
@@ -310,19 +311,18 @@ def _(filtered_tariffs, mo):
 def _(mo):
     mo.accordion(
         {
-            "Expand to add a custom tariff (Optional)": mo.md("""
-    ### Add a Custom Tariff (Optional)
+            "Expand to add custom tariffs (Optional)": mo.md("""
+    ### Add Custom Tariffs (Optional)
 
-    You can define your own tariff by editing the dictionary below. The tariff
-    will be included in the bill calculations alongside any API tariffs you've
-    selected above.
+    You can define your own tariffs by editing the list in the code cell below.
+    Multiple tariffs can be added to the list and will be included in the bill
+    calculations alongside any tariffs you've selected above.
 
     **Instructions:**
     1. Make sure this notebook view is set so that you can see a Python code cell below ('Toggle app view' button)
     2. Click into the code cell below (or use the cell settings to 'Unhide') to edit contents
-    2. Set `use_custom_tariff = True` to enable your custom tariff
-    3. Edit the tariff structure below to match your desired rates
-    4. Run this cell to apply your changes
+    3. Add tariff dictionaries to the `custom_tariffs` list
+    4. Run the cell to apply your changes
 
     **Tariff structure guide:**
     - `Name`: Display name for your tariff
@@ -338,77 +338,77 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _():
-    # CUSTOM TARIFF CONFIGURATION (OPTIONAL)
-    # Set use_custom_tariff = True to include this tariff in calculations
+    # CUSTOM TARIFFS CONFIGURATION (OPTIONAL)
+    # Add your custom tariffs to this list. Each tariff should be a dictionary
+    # following the structure shown in the examples below.
     # ============================================================
 
-    use_custom_tariff = False  # Change to True to enable
+    custom_tariffs = [
+        # ------------------------------------------------------------
+        # EXAMPLE 1: Simple Single Rate Tariff
+        # ------------------------------------------------------------
+        # {
+        #     "Name": "My Custom Single Rate",
+        #     "Type": "Single Rate",
+        #     "ProviderType": "Retailer",
+        #     "CustomerType": "Residential",
+        #     "State": "Custom",
+        #     "Distributor": "Custom",
+        #     "Parameters": {
+        #         "Daily": {"Unit": "$/day", "Value": 1.00},
+        #         "FlatRate": {"Unit": "$/kWh", "Value": 0.25},
+        #         "FiT": {"Unit": "$/kWh", "Value": 0.05},
+        #     },
+        # },
+        # ------------------------------------------------------------
+        # EXAMPLE 2: Time of Use Tariff
+        # ------------------------------------------------------------
+        # {
+        #     "Name": "My Custom TOU Tariff",
+        #     "Type": "TOU",
+        #     "ProviderType": "Retailer",
+        #     "CustomerType": "Residential",
+        #     "State": "Custom",
+        #     "Distributor": "Custom",
+        #     "Parameters": {
+        #         "Daily": {"Unit": "$/day", "Value": 1.00},
+        #         "TOU": {
+        #             "Peak": {
+        #                 "Unit": "$/kWh",
+        #                 "Value": 0.35,
+        #                 "TimeIntervals": {"T1": ["14:00", "20:00"]},
+        #                 "Weekday": True,
+        #                 "Weekend": False,
+        #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        #             },
+        #             "Shoulder": {
+        #                 "Unit": "$/kWh",
+        #                 "Value": 0.25,
+        #                 "TimeIntervals": {"T1": ["07:00", "14:00"], "T2": ["20:00", "22:00"]},
+        #                 "Weekday": True,
+        #                 "Weekend": False,
+        #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        #             },
+        #             "OffPeak": {
+        #                 "Unit": "$/kWh",
+        #                 "Value": 0.15,
+        #                 "TimeIntervals": {"T1": ["22:00", "07:00"]},
+        #                 "Weekday": True,
+        #                 "Weekend": True,
+        #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        #             },
+        #         },
+        #         "FiT": {"Unit": "$/kWh", "Value": 0.05},
+        #     },
+        # },
+        # ------------------------------------------------------------
+        # Add more tariffs here by copying and modifying the examples above
+        # ------------------------------------------------------------
+    ]
 
-    # ------------------------------------------------------------
-    # OPTION 1: Simple Single Rate Tariff
-    # Uncomment this block and comment out Option 2 to use
-    # ------------------------------------------------------------
-    custom_tariff = {
-        "Name": "My Custom Single Rate",
-        "Type": "Single Rate",
-        "ProviderType": "Retailer",
-        "CustomerType": "Residential",
-        "State": "Custom",
-        "Distributor": "Custom",
-        "Parameters": {
-            "Daily": {"Unit": "$/day", "Value": 1.00},
-            "FlatRate": {"Unit": "$/kWh", "Value": 0.25},
-            "FiT": {"Unit": "$/kWh", "Value": 0.05},
-        },
-    }
-
-    # ------------------------------------------------------------
-    # OPTION 2: Time of Use Tariff
-    # Uncomment this block and comment out Option 1 to use
-    # ------------------------------------------------------------
-    # custom_tariff = {
-    #     "Name": "My Custom TOU Tariff",
-    #     "Type": "TOU",
-    #     "ProviderType": "Retailer",
-    #     "CustomerType": "Residential",
-    #     "State": "Custom",
-    #     "Distributor": "Custom",
-    #     "Parameters": {
-    #         "Daily": {"Unit": "$/day", "Value": 1.00},
-    #         "TOU": {
-    #             "Peak": {
-    #                 "Unit": "$/kWh",
-    #                 "Value": 0.35,
-    #                 "TimeIntervals": {"T1": ["14:00", "20:00"]},
-    #                 "Weekday": True,
-    #                 "Weekend": False,
-    #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    #             },
-    #             "Shoulder": {
-    #                 "Unit": "$/kWh",
-    #                 "Value": 0.25,
-    #                 "TimeIntervals": {"T1": ["07:00", "14:00"], "T2": ["20:00", "22:00"]},
-    #                 "Weekday": True,
-    #                 "Weekend": False,
-    #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    #             },
-    #             "OffPeak": {
-    #                 "Unit": "$/kWh",
-    #                 "Value": 0.15,
-    #                 "TimeIntervals": {"T1": ["22:00", "07:00"]},
-    #                 "Weekday": True,
-    #                 "Weekend": True,
-    #                 "Month": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    #             },
-    #         },
-    #         "FiT": {"Unit": "$/kWh", "Value": 0.05},
-    #     },
-    # }
-
-    # Apply the custom tariff only if enabled
-    if not use_custom_tariff:
-        custom_tariff = None
-    return (custom_tariff,)
+    # Export the list for use in calculations
+    custom_tariffs_list = custom_tariffs if custom_tariffs else []
+    return (custom_tariffs_list,)
 
 
 @app.cell(hide_code=True)
@@ -494,7 +494,7 @@ def _(mo):
 def _(
     battery_form,
     bill_calculator,
-    custom_tariff,
+    custom_tariffs_list,
     include_battery,
     load_profile,
     pd,
@@ -508,9 +508,9 @@ def _(
         else []
     )
 
-    # Add custom tariff if one has been submitted
-    if custom_tariff is not None:
-        _tariffs_to_calculate.append(custom_tariff)
+    # Add all custom tariffs to the calculation list
+    if custom_tariffs_list:
+        _tariffs_to_calculate.extend(custom_tariffs_list)
 
     # Get battery parameters from form (use defaults if not yet submitted)
     _battery_params = battery_form.value or {}
