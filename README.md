@@ -2,12 +2,12 @@
 
 [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/EllieKallmier/bill_calculator/blob/main/bill_calculator_notebook.py)
 
-An interactive [marimo](https://marimo.io) notebook for calculating and comparing residential electricity bills under different tariff structures. Designed for energy economics education and exploration.
+An interactive [marimo](https://marimo.io) notebook for calculating and comparing residential electricity bills under different tariff structures.
 
 ## Features
 
 - **Load Profile Analysis** — Load sample half-hourly consumption and rooftop PV generation data for a full year
-- **Tariff Comparison** — Select from real Australian network tariffs (flat rate, time-of-use, demand charges) or define custom tariffs
+- **Tariff Comparison** — Select from a preset list of tariffs (flat rate, time-of-use, demand charges) or define custom tariffs
 - **Solar PV Modelling** — Compare bills with and without solar to quantify savings
 - **Battery Storage Simulation** — Add a battery using a simple self-consumption maximisation algorithm
 - **Interactive Visualisations** — Explore load profiles and bill breakdowns with zoomable Altair charts
