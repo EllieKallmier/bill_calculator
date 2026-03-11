@@ -6,12 +6,32 @@ An interactive [marimo](https://marimo.io) notebook for calculating and comparin
 
 ## Features
 
-- **Load Profile Analysis** — Load sample half-hourly consumption and rooftop PV generation data for a full year
+- **Load Profile Analysis** — Use sample profiles or upload your own CSV files with consumption and PV generation data
+- **Custom Data Upload** — Upload multiple CSV files with automatic datetime parsing, validation, and format detection
 - **Tariff Comparison** — Select from a preset list of tariffs (flat rate, time-of-use, demand charges) or define custom tariffs
 - **Solar PV Modelling** — Compare bills with and without solar to quantify savings
 - **Battery Storage Simulation** — Add a battery using a simple self-consumption maximisation algorithm
 - **Interactive Visualisations** — Explore load profiles and bill breakdowns with zoomable Altair charts
 - **Export Results** — Download bill calculations and load data as CSV for further analysis
+
+## Uploading Your Own Data
+
+You can upload your own load profile data as CSV files. Required format:
+
+| Column        | Description                           | Required |
+| ------------- | ------------------------------------- | -------- |
+| `TS`          | Timestamp (various formats supported) | Yes      |
+| `Wh` or `kWh` | Electricity consumption per interval  | Yes      |
+| `PV`          | Solar PV generation (same units)      | No       |
+| `CUSTOMER_ID` | Site identifier                       | No       |
+
+**Supported timestamp formats:**
+- `2020-01-01 00:00:00` (ISO, recommended)
+- `01/01/2020 00:00` (day/month/year)
+- `2020-01-01T00:00:00` (ISO with T)
+- `01-Jan-2020 00:00:00` (month names)
+
+The notebook automatically detects the format, converts units, and validates your data.
 
 ## Getting Started
 

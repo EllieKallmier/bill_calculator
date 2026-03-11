@@ -12,7 +12,7 @@
 
 import marimo
 
-__generated_with = "0.19.4"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -50,14 +50,25 @@ def _(mo):
     mo.md("""
     ## 1. Load Data
 
-    Select a sample customer load profile from the dropdown below. Each profile
-    contains half-hourly electricity consumption and rooftop PV generation for one year.
+    Choose a data source below: use one of the sample customer profiles, or upload
+    your own CSV file(s) with load and PV generation data.
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
+    data_source_toggle = mo.ui.radio(
+        options={"Sample Data": "sample", "Upload Custom Data": "upload"},
+        value="Sample Data",
+        label="Data Source:",
+    )
+    data_source_toggle
+    return (data_source_toggle,)
+
+
+@app.cell(hide_code=True)
+def _(data_source_toggle, mo):
     # Sample data file selector (using GitHub raw URLs for WASM compatibility)
     _base_url = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_data/"
     _sample_files = {
@@ -82,87 +93,396 @@ def _(mo):
         value="S0023",
         label="Select load profile:",
     )
-    sample_data_selector
+    # Only show if sample data is selected
+    sample_data_selector if data_source_toggle.value == "sample" else None
     return (sample_data_selector,)
 
 
 @app.cell(hide_code=True)
-def _(pd, sample_data_selector):
-    # Load selected sample data from GitHub
-    _base_url = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_data/"
-    _filepath = sample_data_selector.value or f"{_base_url}S0023_profile.csv"
-    sample_load_profile = pd.read_csv(
-        _filepath,
-        parse_dates=["TS"],
-        index_col="TS",
+def _(data_source_toggle, mo):
+    # File upload widget for custom data
+    file_upload = mo.ui.file(
+        filetypes=[".csv"],
+        multiple=True,
+        label="Upload CSV file(s):",
     )
 
-    # Pre-process the data
-    load_profile = sample_load_profile.drop(columns=["CUSTOMER_ID"])
-    load_profile = load_profile.fillna(0.0)
-    load_profile = load_profile * 1e-3  # Convert Wh to kWh
-    load_profile = load_profile.rename(columns={"Wh": "kWh"})
-    load_profile = load_profile.resample("30min").sum()
-    load_profile = load_profile[load_profile.index.year == 2020]
+    _format_docs = mo.md("""
+    ### Required Data Format
+
+    Your CSV file(s) must contain the following columns:
+
+    | Column | Description | Required |
+    |--------|-------------|----------|
+    | `TS` | Timestamp (see accepted formats below) | Yes |
+    | `Wh` or `kWh` | Electricity consumption per interval | Yes |
+    | `PV` | Solar PV generation per interval (same units as consumption) | No (defaults to 0) |
+    | `CUSTOMER_ID` | Identifier for the customer/site | No (defaults to filename) |
+
+    **Accepted timestamp formats:**
+    - `2020-01-01 00:00:00` (ISO format, recommended)
+    - `2020-01-01T00:00:00` (ISO with T separator)
+    - `01/01/2020 00:00` (day/month/year)
+    - `1/01/2020 0:00` (without leading zeros)
+    - `2020/01/01 00:00:00` (year first with slashes)
+    - `01-Jan-2020 00:00:00` (with month name)
+
+    **Notes:**
+    - Data should be at regular intervals (e.g., 5-minute, 15-minute, or 30-minute)
+    - If using `Wh`, values will be converted to `kWh` automatically
+    - You can upload multiple files to compare different customers/sites
+    - Each file should contain data for one customer (or use `CUSTOMER_ID` to distinguish)
+
+    **Example:**
+    ```
+    TS,Wh,PV
+    2020-01-01 00:00:00,250.5,0.0
+    2020-01-01 00:30:00,245.2,0.0
+    2020-01-01 01:00:00,238.1,0.0
+    ...
+    ```
+    """)
+
+    # Only show if upload is selected
+    mo.vstack(
+        [file_upload, _format_docs]
+    ) if data_source_toggle.value == "upload" else None
+    return (file_upload,)
+
+
+@app.cell(hide_code=True)
+def _(data_source_toggle, file_upload, mo, pd):
+    # Common datetime formats to try (in order of preference)
+    DATETIME_FORMATS = [
+        None,  # Let pandas infer first
+        "%Y-%m-%d %H:%M:%S",  # 2020-01-01 00:00:00
+        "%Y-%m-%dT%H:%M:%S",  # 2020-01-01T00:00:00
+        "%d/%m/%Y %H:%M:%S",  # 01/01/2020 00:00:00
+        "%d/%m/%Y %H:%M",  # 01/01/2020 00:00
+        "%Y/%m/%d %H:%M:%S",  # 2020/01/01 00:00:00
+        "%d-%b-%Y %H:%M:%S",  # 01-Jan-2020 00:00:00
+        "%d-%m-%Y %H:%M:%S",  # 01-01-2020 00:00:00
+        "%m/%d/%Y %H:%M:%S",  # 01/01/2020 00:00:00 (US format)
+        "%m/%d/%Y %H:%M",  # 01/01/2020 00:00 (US format)
+    ]
+
+    def parse_datetime_column(series):
+        """Try multiple datetime formats and return parsed series with status."""
+        # First, try pandas automatic inference
+        try:
+            parsed = pd.to_datetime(series, dayfirst=True)
+            # Check if parsing was successful (no NaT values that weren't already null)
+            if parsed.isna().sum() <= series.isna().sum():
+                return parsed, None, "auto-detected"
+        except Exception:
+            pass
+
+        # Try each format explicitly
+        for fmt in DATETIME_FORMATS:
+            if fmt is None:
+                continue
+            try:
+                parsed = pd.to_datetime(series, format=fmt)
+                if parsed.isna().sum() <= series.isna().sum():
+                    return parsed, None, fmt
+            except Exception:
+                continue
+
+        # If all formats fail, provide helpful error message
+        sample_values = series.dropna().head(3).tolist()
+        error_msg = (
+            f"Could not parse timestamp column. "
+            f"Sample values: {sample_values}. "
+            f"Please use a format like `2020-01-01 00:00:00` or `01/01/2020 00:00`."
+        )
+        return None, error_msg, None
+
+    def validate_and_parse_uploads(files):
+        """Validate uploaded CSV files and return parsed DataFrames with validation status."""
+        results = []
+        errors = []
+        warnings = []
+
+        for file in files:
+            filename = file.name
+            try:
+                # Read CSV content
+                import io
+
+                content = file.contents.decode("utf-8")
+                df = pd.read_csv(io.StringIO(content))
+
+                # Check for required timestamp column
+                if "TS" not in df.columns:
+                    errors.append(f"**{filename}**: Missing required column `TS`")
+                    continue
+
+                # Check for consumption column (Wh or kWh)
+                has_wh = "Wh" in df.columns
+                has_kwh = "kWh" in df.columns
+                if not has_wh and not has_kwh:
+                    errors.append(
+                        f"**{filename}**: Missing consumption column (`Wh` or `kWh`)"
+                    )
+                    continue
+
+                # Parse timestamps with robust format detection
+                parsed_ts, ts_error, detected_format = parse_datetime_column(df["TS"])
+                if ts_error:
+                    errors.append(f"**{filename}**: {ts_error}")
+                    continue
+
+                df["TS"] = parsed_ts
+                df = df.set_index("TS")
+
+                # Check for timezone info and warn if present
+                if df.index.tz is not None:
+                    df.index = df.index.tz_localize(None)
+                    warnings.append(
+                        f"**{filename}**: Timezone info removed from timestamps"
+                    )
+
+                # Validate timestamps are sorted and check for gaps
+                if not df.index.is_monotonic_increasing:
+                    df = df.sort_index()
+                    warnings.append(
+                        f"**{filename}**: Data was not sorted by time; sorted automatically"
+                    )
+
+                # Add CUSTOMER_ID if missing (use filename)
+                if "CUSTOMER_ID" not in df.columns:
+                    customer_id = filename.rsplit(".", 1)[0]
+                    df["CUSTOMER_ID"] = customer_id
+
+                # Add PV column if missing
+                if "PV" not in df.columns:
+                    df["PV"] = 0.0
+
+                # Standardise to kWh
+                if has_wh and not has_kwh:
+                    df["kWh"] = df["Wh"] * 1e-3
+                    df = df.drop(columns=["Wh"])
+
+                # Detect data interval
+                if len(df) > 1:
+                    intervals = df.index.to_series().diff().dropna()
+                    median_interval = intervals.median()
+                    interval_minutes = median_interval.total_seconds() / 60
+                else:
+                    interval_minutes = None
+
+                results.append(
+                    {
+                        "filename": filename,
+                        "df": df,
+                        "rows": len(df),
+                        "customer_id": df["CUSTOMER_ID"].iloc[0]
+                        if "CUSTOMER_ID" in df.columns
+                        else filename,
+                        "datetime_format": detected_format,
+                        "interval_minutes": interval_minutes,
+                        "start_date": df.index.min(),
+                        "end_date": df.index.max(),
+                    }
+                )
+
+            except Exception as e:
+                errors.append(f"**{filename}**: Error parsing file - {str(e)}")
+
+        return results, errors, warnings
+
+    # Process uploads if in upload mode and files are present
+    upload_results = []
+    upload_errors = []
+    upload_warnings = []
+    if data_source_toggle.value == "upload" and file_upload.value:
+        upload_results, upload_errors, upload_warnings = validate_and_parse_uploads(
+            file_upload.value
+        )
+
+    # Display validation status
+    _output = None
+    if data_source_toggle.value == "upload":
+        if not file_upload.value:
+            _output = mo.callout(
+                mo.md("**Upload one or more CSV files** to begin analysis."),
+                kind="info",
+            )
+        elif upload_errors:
+            _error_list = "\n".join([f"- {e}" for e in upload_errors])
+            _output = mo.callout(
+                mo.md(f"**Validation errors:**\n\n{_error_list}"),
+                kind="danger",
+            )
+        elif upload_results:
+            # Build detailed success message
+            _success_items = []
+            for r in upload_results:
+                _interval_str = (
+                    f"{r['interval_minutes']:.0f}-min intervals"
+                    if r["interval_minutes"]
+                    else "unknown interval"
+                )
+                _date_range = f"{r['start_date'].strftime('%d %b %Y')} to {r['end_date'].strftime('%d %b %Y')}"
+                _success_items.append(
+                    f"- **{r['filename']}**: {r['rows']:,} rows, {_interval_str}, {_date_range}"
+                )
+            _success_list = "\n".join(_success_items)
+
+            _warning_section = ""
+            if upload_warnings:
+                _warning_list = "\n".join([f"- {w}" for w in upload_warnings])
+                _warning_section = f"\n\n**Warnings:**\n{_warning_list}"
+
+            _output = mo.callout(
+                mo.md(
+                    f"**Successfully loaded {len(upload_results)} file(s):**\n\n{_success_list}{_warning_section}"
+                ),
+                kind="success",
+            )
+    _output
+    return (upload_results,)
+
+
+@app.cell(hide_code=True)
+def _(data_source_toggle, mo, upload_results):
+    # Profile selector for uploaded data (when multiple profiles are uploaded)
+    uploaded_profile_selector = None
+    if (
+        data_source_toggle.value == "upload"
+        and upload_results
+        and len(upload_results) > 1
+    ):
+        _options = {r["customer_id"]: r["customer_id"] for r in upload_results}
+        uploaded_profile_selector = mo.ui.dropdown(
+            options=_options,
+            value=upload_results[0]["customer_id"],
+            label="Select profile to analyse:",
+        )
+        uploaded_profile_selector
+    return (uploaded_profile_selector,)
+
+
+@app.cell(hide_code=True)
+def _(
+    data_source_toggle,
+    pd,
+    sample_data_selector,
+    upload_results,
+    uploaded_profile_selector,
+):
+    # Load data based on selected source
+    load_profile = None
+
+    if data_source_toggle.value == "sample":
+        # Load selected sample data from GitHub
+        _base_url = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_data/"
+        _filepath = sample_data_selector.value or f"{_base_url}S0023_profile.csv"
+        sample_load_profile = pd.read_csv(
+            _filepath,
+            parse_dates=["TS"],
+            index_col="TS",
+        )
+
+        # Pre-process the sample data
+        load_profile = sample_load_profile.drop(columns=["CUSTOMER_ID"])
+        load_profile = load_profile.fillna(0.0)
+        load_profile = load_profile * 1e-3  # Convert Wh to kWh
+        load_profile = load_profile.rename(columns={"Wh": "kWh"})
+        load_profile = load_profile.resample("30min").sum()
+        load_profile = load_profile[load_profile.index.year == 2020]
+
+    elif data_source_toggle.value == "upload" and upload_results:
+        # Use uploaded data
+        if len(upload_results) == 1:
+            # Single file uploaded
+            _df = upload_results[0]["df"].copy()
+        else:
+            # Multiple files - use the selected profile
+            _selected_id = (
+                uploaded_profile_selector.value
+                if uploaded_profile_selector
+                else upload_results[0]["customer_id"]
+            )
+            _df = next(
+                (r["df"] for r in upload_results if r["customer_id"] == _selected_id),
+                upload_results[0]["df"],
+            ).copy()
+
+        # Pre-process uploaded data
+        if "CUSTOMER_ID" in _df.columns:
+            _df = _df.drop(columns=["CUSTOMER_ID"])
+        load_profile = _df.fillna(0.0)
+        # Resample to 30-minute intervals
+        load_profile = load_profile.resample("30min").sum()
     return (load_profile,)
 
 
 @app.cell(hide_code=True)
 def _(load_profile, mo):
     # Display data summary
-    annual_load = load_profile["kWh"].sum()
-    annual_pv = load_profile["PV"].sum()
+    _output = None
+    if load_profile is not None and not load_profile.empty:
+        annual_load = load_profile["kWh"].sum()
+        annual_pv = load_profile["PV"].sum()
 
-    mo.callout(
-        mo.md(
-            f"""
-            **Data Summary:**
-            - **Period:** {load_profile.index.min().strftime("%d %b %Y")} to {load_profile.index.max().strftime("%d %b %Y")}
-            - **Annual Load:** {annual_load:,.0f} kWh
-            - **Annual PV Generation:** {annual_pv:,.0f} kWh
-            - **Data Points:** {len(load_profile):,} (half-hourly intervals)
-            """
-        ),
-        kind="info",
-    )
+        _output = mo.callout(
+            mo.md(
+                f"""
+                **Data Summary:**
+                - **Period:** {load_profile.index.min().strftime("%d %b %Y")} to {load_profile.index.max().strftime("%d %b %Y")}
+                - **Annual Load:** {annual_load:,.0f} kWh
+                - **Annual PV Generation:** {annual_pv:,.0f} kWh
+                - **Data Points:** {len(load_profile):,} (half-hourly intervals)
+                """
+            ),
+            kind="info",
+        )
+    _output
     return
 
 
 @app.cell(hide_code=True)
 def _(alt, load_profile, mo):
     # Interactive chart of load and PV data
-    long_form_load = (
-        load_profile.reset_index()
-        .rename(columns={"PV": "Generation", "kWh": "Load"})
-        .melt("TS", var_name="Data", value_name="Energy (kWh)")
-    )
-
-    _colour = {
-        "field": "Data",
-        "scale": {"domain": ["Generation", "Load"], "range": ["gold", "dodgerblue"]},
-    }
-
-    _interval = alt.selection_interval(encodings=["x"])
-    base_simple = (
-        alt.Chart(
-            long_form_load,
+    _output = None
+    if load_profile is not None and not load_profile.empty:
+        long_form_load = (
+            load_profile.reset_index()
+            .rename(columns={"PV": "Generation", "kWh": "Load"})
+            .melt("TS", var_name="Data", value_name="Energy (kWh)")
         )
-        .mark_line()
-        .encode(
-            x="TS:T",
-            y="Energy (kWh):Q",
-            color=_colour,
-        )
-    )
-    chart_simple = base_simple.encode(
-        x=alt.X("TS:T").scale(domain=_interval)
-    ).properties(width=1200, height=300, title="Load and generation profile")
-    view_simple = base_simple.add_params(
-        _interval,
-    ).properties(width=1200, height=100, title="Click and drag to explore detail")
 
-    _chart = chart_simple & view_simple
-    mo.ui.altair_chart(_chart)
+        _colour = {
+            "field": "Data",
+            "scale": {
+                "domain": ["Generation", "Load"],
+                "range": ["gold", "dodgerblue"],
+            },
+        }
+
+        _interval = alt.selection_interval(encodings=["x"])
+        base_simple = (
+            alt.Chart(
+                long_form_load,
+            )
+            .mark_line()
+            .encode(
+                x="TS:T",
+                y="Energy (kWh):Q",
+                color=_colour,
+            )
+        )
+        chart_simple = base_simple.encode(
+            x=alt.X("TS:T").scale(domain=_interval)
+        ).properties(width=1200, height=300, title="Load and generation profile")
+        view_simple = base_simple.add_params(
+            _interval,
+        ).properties(width=1200, height=100, title="Click and drag to explore detail")
+
+        _chart = chart_simple & view_simple
+        _output = mo.ui.altair_chart(_chart)
+    _output
     return
 
 
@@ -806,13 +1126,6 @@ def _(mo):
     return
 
 
-# =============================================================================
-# UTILITY FUNCTIONS (hidden by default)
-# =============================================================================
-# The cells below contain the bill calculation logic. They are hidden by default
-# to keep the notebook clean, but you can expand them to see how they work.
-
-
 @app.cell(hide_code=True)
 def _(pd):
     # ---------------------------------------------------------------------------
@@ -1146,16 +1459,15 @@ def _(np, pd, time_select):
         return demand_charge_total
 
     return (
+        calculate_annual_block_charge,
+        calculate_daily_block_charge,
         calculate_daily_charge,
+        calculate_demand_charge,
         calculate_fixed_charge,
         calculate_flatrate_charge,
-        calculate_annual_block_charge,
-        calculate_quarterly_block_charge,
         calculate_monthly_block_charge,
-        calculate_daily_block_charge,
+        calculate_quarterly_block_charge,
         calculate_time_of_use_charge,
-        calculate_demand_charge,
-        calculate_demand_charge_component,
     )
 
 
@@ -1434,12 +1746,11 @@ def _():
     # Tariff data URL (GitHub raw URL for WASM compatibility)
     # ---------------------------------------------------------------------------
     SAMPLE_TARIFFS_URL = "https://raw.githubusercontent.com/EllieKallmier/bill_calculator/main/sample_tariffs/sample_ausgrid_tariffs.json"
-
     return (SAMPLE_TARIFFS_URL,)
 
 
 @app.cell(hide_code=True)
-def _(SAMPLE_TARIFFS_URL, pd):
+def _(SAMPLE_TARIFFS_URL):
     import json
     import urllib.request
 
@@ -1491,7 +1802,7 @@ def _(SAMPLE_TARIFFS_URL, pd):
 
         return selected_tariffs
 
-    return fetch_all_tariffs, filter_tariffs, json
+    return fetch_all_tariffs, filter_tariffs
 
 
 if __name__ == "__main__":
