@@ -7,7 +7,6 @@
 #     "plotly>=5.0.0",
 #     "altair==6.0.0",
 #     "pyarrow==23.0.0",
-#     "vegafusion==2.0.3",
 # ]
 # ///
 
@@ -23,11 +22,8 @@ def _():
     import marimo as mo
     import numpy as np
     import pandas as pd
-    import vegafusion
 
-    alt.data_transformers.enable("vegafusion")
-
-    return alt, mo, np, pd, vegafusion
+    return alt, mo, np, pd
 
 
 @app.cell(hide_code=True)
