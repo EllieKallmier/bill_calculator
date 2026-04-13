@@ -23,6 +23,9 @@ def _():
     import numpy as np
     import pandas as pd
 
+    # Disable Altair's 5000-row limit (WASM-compatible alternative to vegafusion)
+    alt.data_transformers.disable_max_rows()
+
     return alt, mo, np, pd
 
 
