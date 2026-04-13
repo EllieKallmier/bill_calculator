@@ -484,7 +484,7 @@ def _(alt, load_profile, mo):
         ).properties(width=1200, height=100, title="Click and drag to explore detail")
 
         _chart = chart_simple & view_simple
-        _output = mo.ui.altair_chart(_chart)
+        _output = _chart
     _output
     return
 
@@ -972,7 +972,7 @@ def _(alt, combined_results, mo):
             )
             .properties(title="Total Annual Bill Comparison", width=1200, height=300)
         )
-        _output = mo.ui.altair_chart(_chart)
+        _output = _chart
 
     _output
     return
