@@ -22,10 +22,11 @@ def _():
     import marimo as mo
     import numpy as np
     import pandas as pd
+    import vegafusion
 
     alt.data_transformers.enable("vegafusion")
 
-    return alt, mo, np, pd
+    return alt, mo, np, pd, vegafusion
 
 
 @app.cell(hide_code=True)
