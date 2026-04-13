@@ -8,7 +8,7 @@ dependencies = [
     "fastparquet>=2025.12.0",
     "ipdb>=0.13.13",
     "ipython>=9.9.0",
-    "marimo[lsp,recommended]>=0.18.4",
+    "marimo[lsp,recommended]>=0.18.0,<=0.18.4",
     "numpy>=2.4.0",
     "pandas>=2.3.3",
     "plotly>=5.0.0",
