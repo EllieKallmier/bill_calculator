@@ -23,6 +23,8 @@ def _():
     import numpy as np
     import pandas as pd
 
+    alt.data_transformers.enable("vegafusion")
+
     return alt, mo, np, pd
 
 
