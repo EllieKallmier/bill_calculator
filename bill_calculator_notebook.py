@@ -7,6 +7,7 @@
 #     "plotly>=5.0.0",
 #     "altair==6.0.0",
 #     "pyarrow==23.0.0",
+#     "vegafusion==2.0.3",
 # ]
 # ///
 
