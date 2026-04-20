@@ -1081,7 +1081,10 @@ def _(
     load_filename_input,
     mo,
 ):
+    import base64
+
     # Download buttons with custom filenames
+    # Using mimetype parameter for better WASM compatibility
     _output = None
     if not combined_results.empty:
         _csv_data = combined_results.to_csv(index=False)
@@ -1089,6 +1092,7 @@ def _(
         bill_calc_download = mo.download(
             data=_csv_data.encode("utf-8"),
             filename=_bill_filename,
+            mimetype="text/csv",
             label="Download Bill Results (CSV)",
         )
 
@@ -1097,15 +1101,43 @@ def _(
         load_data_download = mo.download(
             data=_load_data.encode("utf-8"),
             filename=_load_filename,
+            mimetype="text/csv",
             label="Download Load & PV Data (CSV)",
         )
 
-        _output = mo.hstack(
+        # Create base64 data URIs as fallback for WASM environments
+        _bill_b64 = base64.b64encode(_csv_data.encode("utf-8")).decode("utf-8")
+        _load_b64 = base64.b64encode(_load_data.encode("utf-8")).decode("utf-8")
+
+        _bill_data_uri = f"data:text/csv;base64,{_bill_b64}"
+        _load_data_uri = f"data:text/csv;base64,{_load_b64}"
+
+        _fallback_note = mo.md(f"""
+**If the download buttons don't work** (e.g., in molab/WASM), use these direct links:
+
+- <a href="{_bill_data_uri}" download="{_bill_filename}">Download Bill Results (direct link)</a>
+- <a href="{_load_data_uri}" download="{_load_filename}">Download Load & PV Data (direct link)</a>
+
+*Right-click and "Save link as..." if clicking doesn't work.*
+""")
+
+        _output = mo.vstack(
             [
-                mo.vstack([bill_filename_input, bill_calc_download], align="center"),
-                mo.vstack([load_filename_input, load_data_download], align="center"),
-            ],
-            justify="center",
+                mo.hstack(
+                    [
+                        mo.vstack(
+                            [bill_filename_input, bill_calc_download], align="center"
+                        ),
+                        mo.vstack(
+                            [load_filename_input, load_data_download], align="center"
+                        ),
+                    ],
+                    justify="center",
+                ),
+                mo.accordion(
+                    {"Trouble downloading? Click here for alternatives": _fallback_note}
+                ),
+            ]
         )
     else:
         _output = mo.md("*No results to download yet.*")
